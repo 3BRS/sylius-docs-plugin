@@ -1,0 +1,45 @@
+{% extends '@SyliusAdmin/shared/layout/base.html.twig' %}
+
+{# Prepare reusable variables like Sylius does internally in CRUD controllers #}
+{# applicationName and pluralName are used as fallbacks for the breadcrumb,
+   see vendor/sylius/sylius/src/Sylius/Bundle/AdminBundle/templates/shared/crud/index/content/header/breadcrumbs.html.twig.
+   Change it by passing 'title' when rendering the template. #}
+{% set metadata = metadata|default({
+    applicationName: 'threebrs',
+    pluralName: 'docs_plugin.header',
+    name: '_empty',
+}) %}
+
+{% set configuration = configuration|default({
+    title: 'threebrs.ui.docs_plugin.menuTitle'|trans
+}) %}
+
+{% set resources = resources|default({
+    definition: { enabledFilters: false },
+    data: {}
+}) %}
+
+{% set filters = filters|default({}) %}
+{% set resource = null %}
+
+{# Block for title, using configuration title #}
+{% block title %}
+	{{ configuration.title|trans }}
+	|
+{{ parent() }}
+{% endblock %}
+
+{% block body %}
+{% hook 'sylius_admin.resourceless.index.content' %}
+{% endblock %}
+
+{# Block for stylesheets - delegates to hook #}
+{% block stylesheets %}
+	{{ parent() }}
+{% hook 'sylius_admin.base#stylesheets' %}
+{% endblock %}
+
+{# Block for javascripts - delegates to hook #}
+{% block javascripts %}
+	{{ parent() }}
+{% hook 'sylius_admin.base#javascripts' %}{% endblock %}

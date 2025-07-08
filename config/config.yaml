@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@ThreeBRSSyliusDocsPlugin/config/app/twig_hooks/**/*.yaml" }

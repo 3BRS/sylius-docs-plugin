@@ -1,0 +1,10 @@
+{% extends '@ThreeBRSSyliusDocsPlugin/admin/shared/layout/resourceless/resourceless.html.twig' %}
+
+{% block title %}
+	{{ 'threebrs.ui.docsPlugin.menuTitle'|trans }}
+{% endblock %}
+
+{% block body %}
+	{% hook 'sylius_admin.resourceless.index' %}
+	{% hook 'sylius_admin.resourceless.adham' %}
+{% endblock %}
