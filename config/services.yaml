@@ -19,4 +19,6 @@ services:
             - '@twig'
             - '@League\CommonMark\CommonMarkConverter'
             - '@security.authorization_checker'
+            - '@kernel'
+
        

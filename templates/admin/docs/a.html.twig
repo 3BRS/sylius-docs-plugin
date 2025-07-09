@@ -13,9 +13,10 @@
                 <ul class="list-group list-group-flush">
                     {% for name in slugs %}
                         <li class="list-group-item {% if slug == name %}active text-white bg-primary{% endif %}">
-                            <a href="{{ name == 'index'
-                                ? path('threebrs_admin_docs_index')
-                                : path('threebrs_admin_docs_show', { slug: name }) }}">
+                            <a class="{% if slug == name %}text-white{% endif %}"
+                               href="{{ name == 'index'
+                                   ? path('threebrs_admin_docs_index')
+                                   : path('threebrs_admin_docs_show', { slug: name }) }}">
                                 {{ name|replace({'_': ' '})|title }}
                             </a>
                         </li>
@@ -23,11 +24,19 @@
                 </ul>
             </div>
         </div>
-         <!-- Main Content -->
+
+        <!-- Main Content -->
         <div class="col-md-9">
             <div class="card">
                 <div class="card-body">
-                    {{ html|raw }}
+                    {% if html is empty %}
+                        <div class="alert alert-warning" role="alert">
+                            <h4 class="alert-heading">Missing Documentation</h4>
+                            <p>Please create a <code>docs/index.md</code> file in the root of your Sylius project.</p>
+                        </div>
+                    {% else %}
+                        {{ html|raw }}
+                    {% endif %}
                 </div>
             </div>
         </div>
