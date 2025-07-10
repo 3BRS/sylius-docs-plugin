@@ -1,0 +1,9 @@
+threebrs:
+    ui:
+        docs_plugin:
+            tab_title: Documentation
+            header: Documentation
+            docs_menu_title: Documetation
+            toc: 'Documentation Pages'
+
+            

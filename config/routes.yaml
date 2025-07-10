@@ -1,0 +1,11 @@
+threebrs_admin_docs_index:
+    path: /docs
+    controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::index
+    methods: [GET]
+
+threebrs_admin_docs_show:
+    path: /docs/{slug}
+    controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::show
+    methods: [GET]
+    requirements:
+        slug: '[a-zA-Z0-9_\-]+'

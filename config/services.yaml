@@ -1,0 +1,23 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    ThreeBRS\SyliusDocsPlugin\Menu\AdminMenuListener:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    League\CommonMark\CommonMarkConverter:
+        class: League\CommonMark\CommonMarkConverter
+        arguments:
+            - []         
+
+    ThreeBRS\SyliusDocsPlugin\Controller\DocsController:
+        public: true
+        arguments:
+            - '@twig'
+            - '@League\CommonMark\CommonMarkConverter'
+            - '@security.authorization_checker'
+            - '@kernel'
+
+       

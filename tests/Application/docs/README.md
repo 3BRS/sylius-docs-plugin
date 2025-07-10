@@ -24,11 +24,7 @@
 - Secure access: only admins can view the docs
 
 <p align="center">
-  <img src="https://github.com/3BRS/sylius-docs-plugin/blob/SLS-28-Sylius-docs-plugin/doc/documentation_menu.png?raw=true" alt="Admin Screenshot" />
-</p> 
-
-<p align="center">
-  <img src="https://github.com/3BRS/sylius-docs-plugin/blob/SLS-28-Sylius-docs-plugin/doc/doc_index.png?raw=true" alt="Admin Screenshot" />
+  <img src="https://github.com/3BRS/sylius-analytics-plugin/blob/AK/doc/admin-dashboard-request-logs.png?raw=true" alt="Admin Dashboard Screenshot" />
 </p>
 
 ## Installation

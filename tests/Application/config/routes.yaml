@@ -1,0 +1,13 @@
+#acme_sylius_example_shop:
+#    resource: "@AcmeSyliusExamplePlugin/config/shop_routing.yaml"
+#   prefix: /{_locale}
+#    requirements:
+#        _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
+
+#acme_sylius_example_admin:
+#    resource: "@AcmeSyliusExamplePlugin/config/admin_routing.yaml"
+#    prefix: /admin
+threebrs_docs_plugin_routing_file:
+    resource: "@ThreeBRSSyliusDocsPlugin/config/routes.yaml"
+    prefix: '%sylius_admin.path_name%'
+
