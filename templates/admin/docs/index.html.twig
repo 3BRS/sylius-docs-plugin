@@ -4,6 +4,6 @@
     {{ 'threebrs.ui.docs_plugin.tab_title'|trans }}
 {% endblock %}
 
-
-
-
+{% block body %}
+    {% hook 'sylius_admin.resourceless.index' %}
+{% endblock %}

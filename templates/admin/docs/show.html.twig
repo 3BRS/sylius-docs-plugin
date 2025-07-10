@@ -1,18 +1,9 @@
 {% extends '@ThreeBRSSyliusDocsPlugin/admin/shared/layout/resourceless/resourceless.html.twig' %}
 
 {% block title %}
-	{{ 'threebrs.ui.docsPlugin.docs_menu_title'|trans }}
+	{{ 'threebrs.ui.docs_plugin.tab_title'|trans }}
 {% endblock %}
 
 {% block body %}
-                    {# {% if html is empty %}
-                        <div class="alert alert-warning" role="alert">
-                            <h4 class="alert-heading">Missing index.md file</h4>
-                            <p>Please create a <code>docs/index.md</code> file in the root of your Sylius App.</p>
-                        </div>
-                    {% else %}
-                    {% endif %} #}
-
-                        {% hook 'sylius_admin.resourceless.index' %}
-
+    {% hook 'sylius_admin.resourceless.index' %}
 {% endblock %}

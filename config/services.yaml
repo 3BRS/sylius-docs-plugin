@@ -3,7 +3,6 @@ services:
         autowire: true
         autoconfigure: true
 
-
     ThreeBRS\SyliusDocsPlugin\Menu\AdminMenuListener:
         tags:
             - { name: kernel.event_subscriber }

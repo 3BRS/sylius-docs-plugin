@@ -1,9 +1,8 @@
 threebrs_admin_docs_index:
     path: /docs
-    controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::show
+    controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::index
     methods: [GET]
 
-# Route for /admin/docs/{slug} (renders any other .md file)
 threebrs_admin_docs_show:
     path: /docs/{slug}
     controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::show

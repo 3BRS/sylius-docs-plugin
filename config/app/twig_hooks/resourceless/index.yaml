@@ -43,5 +43,5 @@ sylius_twig_hooks:
 
         "sylius_admin.resourceless.index.content.custom":
             docs_plugin_content:
-                template: "@ThreeBRSSyliusDocsPlugin/admin/docs/a.html.twig"
+                template: "@ThreeBRSSyliusDocsPlugin/admin/docs/display_content.html.twig"
                 priority: 0

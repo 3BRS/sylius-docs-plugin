@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace ThreeBRS\SyliusDocsPlugin\Controller;
 
+use League\CommonMark\CommonMarkConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment as TwigEnvironment;
-use League\CommonMark\CommonMarkConverter;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class DocsController
 {
@@ -21,37 +21,78 @@ class DocsController
         private TwigEnvironment $twig,
         private CommonMarkConverter $converter,
         private AuthorizationCheckerInterface $authorizationChecker,
-        private KernelInterface $kernel
+        private KernelInterface $kernel,
     ) {
         $this->projectDir = $this->kernel->getProjectDir();
     }
 
-    public function show(Request $request, string $slug = 'index'): Response
+    public function index(): Response
     {
-        // 🔐 Admin access protection
         if (!$this->authorizationChecker->isGranted('ROLE_ADMINISTRATION_ACCESS')) {
             throw new AccessDeniedHttpException('Only admin users can access documentation.');
         }
 
-        // 🧱 Directory traversal protection
+        $docsDir = $this->projectDir . '/docs';
+        $indexPath = realpath($docsDir . '/index.md');
+        $docsRealPath = realpath($docsDir);
+
+        $html = null;
+        $indexExists = false;
+
+        if (
+            $indexPath !== false &&
+            is_file($indexPath) &&
+            $docsRealPath !== false &&
+            str_starts_with($indexPath, $docsRealPath)
+        ) {
+            $markdown = file_get_contents($indexPath);
+            if ($markdown === false) {
+                throw new \RuntimeException('Failed to read index.md');
+            }
+
+            $renderedContent = $this->converter->convert($markdown);
+            $html = (string) $renderedContent;
+            $html = preg_replace('/href="([^"\/]+)"/', 'href="/admin/docs/$1"', $html);
+            $indexExists = true;
+        }
+
+        $files = is_dir($docsDir)
+            ? array_filter(scandir($docsDir), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
+            : [];
+
+        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
+
+        return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/index.html.twig', [
+            'html' => $html,
+            'slugs' => $slugs,
+            'index_exists' => $indexExists,
+        ]));
+    }
+
+    public function show(Request $request, string $slug = 'index'): Response
+    {
+        if (!$this->authorizationChecker->isGranted('ROLE_ADMINISTRATION_ACCESS')) {
+            throw new AccessDeniedHttpException('Only admin users can access documentation.');
+        }
+
         if (str_contains($slug, '..') || str_contains($slug, '/')) {
             throw new NotFoundHttpException('Invalid documentation slug.');
         }
 
         $docsDir = $this->projectDir . '/docs';
+        $docsRealPath = realpath($docsDir);
         $expectedPath = $docsDir . '/' . $slug . '.md';
         $path = realpath($expectedPath);
 
         $html = null;
+        $indexExists = true;
 
         if ($path === false) {
             if ($slug !== 'index') {
                 throw new NotFoundHttpException(sprintf('Documentation page "%s" not found.', $slug));
             }
-            // slug === 'index' but file doesn't exist → show warning in Twig
         } else {
-            // 🧱 Security: make sure the file is actually inside /docs
-            if (!str_starts_with($path, realpath($docsDir))) {
+            if ($docsRealPath === false || !str_starts_with($path, $docsRealPath)) {
                 throw new NotFoundHttpException('Access outside docs directory is not allowed.');
             }
 
@@ -59,22 +100,27 @@ class DocsController
                 throw new NotFoundHttpException(sprintf('Documentation page "%s" not found.', $slug));
             }
 
-            // ✅ File exists, convert markdown to HTML
             $markdown = file_get_contents($path);
-            $html = $this->converter->convert($markdown);
+            if ($markdown === false) {
+                throw new \RuntimeException(sprintf('Failed to read file: %s', $path));
+            }
+
+            $renderedContent = $this->converter->convert($markdown);
+            $html = (string) $renderedContent;
+            $html = preg_replace('/href="([^"\/]+)"/', 'href="/admin/docs/$1"', $html);
         }
 
-        // 📋 Build list of available .md files (for TOC)
         $files = is_dir($docsDir)
-            ? array_filter(scandir($docsDir), fn($file) => pathinfo($file, PATHINFO_EXTENSION) === 'md')
+            ? array_filter(scandir($docsDir), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
             : [];
 
-        $slugs = array_map(fn($file) => pathinfo($file, PATHINFO_FILENAME), $files);
+        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
         return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/show.html.twig', [
             'html' => $html,
             'slug' => $slug,
             'slugs' => $slugs,
+            'index_exists' => $indexExists,
         ]));
     }
 }

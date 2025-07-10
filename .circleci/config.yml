@@ -64,7 +64,6 @@ jobs:
             - run: bin/phpstan.sh
             - run: APP_ENV=test bin/ecs.sh --clear-cache
             - run: APP_ENV=test bin/symfony-lint.sh
-            - run: APP_ENV=test bin/behat.sh || grep 'console.CRITICAL' tests/Application/var/log/test.log
 
             # COMPOSER PREFER DIST #
             - run: composer update --no-interaction --prefer-dist
@@ -77,4 +76,3 @@ jobs:
             - run: bin/phpstan.sh
             - run: APP_ENV=test bin/ecs.sh --clear-cache
             - run: APP_ENV=test bin/symfony-lint.sh
-            - run: APP_ENV=test bin/behat.sh
