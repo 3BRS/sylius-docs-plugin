@@ -5,36 +5,27 @@ declare(strict_types=1);
 namespace ThreeBRS\SyliusDocsPlugin\Controller;
 
 use League\CommonMark\CommonMarkConverter;
-use Symfony\Component\HttpFoundation\Request;
+use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment as TwigEnvironment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Routing\RouterInterface;
 
 class DocsController
 {
-    private string $projectDir;
-
     public function __construct(
         private TwigEnvironment $twig,
         private CommonMarkConverter $converter,
-        private AuthorizationCheckerInterface $authorizationChecker,
-        private KernelInterface $kernel,
-    ) {
-        $this->projectDir = $this->kernel->getProjectDir();
-    }
+        private string $docsPath,
+        private RouterInterface $router
+    ) {}
 
+    #[IsGranted('ROLE_ADMINISTRATION_ACCESS')]
     public function index(): Response
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMINISTRATION_ACCESS')) {
-            throw new AccessDeniedHttpException('Only admin users can access documentation.');
-        }
-
-        $docsDir = $this->projectDir . '/docs';
-        $indexPath = realpath($docsDir . '/index.md');
-        $docsRealPath = realpath($docsDir);
+        $indexPath = realpath($this->docsPath . '/index.md');
+        $docsRealPath = realpath($this->docsPath);
 
         $html = null;
         $indexExists = false;
@@ -50,17 +41,21 @@ class DocsController
                 throw new \RuntimeException('Failed to read index.md');
             }
 
-            $renderedContent = $this->converter->convert($markdown);
-            $html = (string) $renderedContent;
-            $html = preg_replace('/href="([^"\/]+)"/', 'href="/admin/docs/$1"', $html);
+            try {
+                $renderedContent = $this->converter->convert($markdown);
+                $html = $this->replaceMarkdownLinks((string) $renderedContent);
+            } catch (CommonMarkException $e) {
+                throw new \RuntimeException('Failed to convert index.md to HTML.', 0, $e);
+            }
+
             $indexExists = true;
         }
 
-        $files = is_dir($docsDir)
-            ? array_filter(scandir($docsDir), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
+        $files = is_dir($this->docsPath)
+            ? array_filter(scandir($this->docsPath), fn($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
             : [];
 
-        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
+        $slugs = array_map(fn($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
         return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/index.html.twig', [
             'html' => $html,
@@ -69,23 +64,18 @@ class DocsController
         ]));
     }
 
-    public function show(Request $request, string $slug = 'index'): Response
+    #[IsGranted('ROLE_ADMINISTRATION_ACCESS')]
+    public function show(string $slug = 'index'): Response
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMINISTRATION_ACCESS')) {
-            throw new AccessDeniedHttpException('Only admin users can access documentation.');
-        }
-
         if (str_contains($slug, '..') || str_contains($slug, '/')) {
             throw new NotFoundHttpException('Invalid documentation slug.');
         }
 
-        $docsDir = $this->projectDir . '/docs';
-        $docsRealPath = realpath($docsDir);
-        $expectedPath = $docsDir . '/' . $slug . '.md';
+        $docsRealPath = realpath($this->docsPath);
+        $expectedPath = $this->docsPath . '/' . $slug . '.md';
         $path = realpath($expectedPath);
 
         $html = null;
-        $indexExists = true;
 
         if ($path === false) {
             if ($slug !== 'index') {
@@ -105,22 +95,64 @@ class DocsController
                 throw new \RuntimeException(sprintf('Failed to read file: %s', $path));
             }
 
-            $renderedContent = $this->converter->convert($markdown);
-            $html = (string) $renderedContent;
-            $html = preg_replace('/href="([^"\/]+)"/', 'href="/admin/docs/$1"', $html);
+            try {
+                $renderedContent = $this->converter->convert($markdown);
+                $html = $this->replaceMarkdownLinks((string) $renderedContent);
+            } catch (CommonMarkException $e) {
+                throw new \RuntimeException(sprintf('Failed to convert markdown for "%s".', $slug), 0, $e);
+            }
         }
 
-        $files = is_dir($docsDir)
-            ? array_filter(scandir($docsDir), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
+        $files = is_dir($this->docsPath)
+            ? array_filter(scandir($this->docsPath), fn($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
             : [];
 
-        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
+        $slugs = array_map(fn($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
         return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/show.html.twig', [
             'html' => $html,
             'slug' => $slug,
             'slugs' => $slugs,
-            'index_exists' => $indexExists,
         ]));
+    }
+
+    #[IsGranted('ROLE_ADMINISTRATION_ACCESS')]
+    public function image(string $filename): Response
+    {
+        if (str_contains($filename, '..') || str_contains($filename, '/')) {
+            throw new NotFoundHttpException('Invalid image filename.');
+        }
+
+        $imagePath = realpath(__DIR__ . '/../../doc/' . $filename);
+        $basePath = realpath(__DIR__ . '/../../doc');
+
+        if (
+            $imagePath === false ||
+            $basePath === false ||
+            !str_starts_with($imagePath, $basePath) ||
+            !is_file($imagePath)
+        ) {
+            throw new NotFoundHttpException(sprintf('Image "%s" not found.', $filename));
+        }
+
+        return new Response(file_get_contents($imagePath), 200, [
+            'Content-Type' => mime_content_type($imagePath),
+            'Content-Disposition' => 'inline',
+        ]);
+    }
+
+    private function replaceMarkdownLinks(string $html): string
+    {
+        $html = preg_replace_callback('/href="([^"\/]+)"/', function ($matches) {
+            $slug = pathinfo($matches[1], \PATHINFO_FILENAME);
+            return 'href="' . $this->router->generate('threebrs_admin_docs_plugin_show', ['slug' => $slug]) . '"';
+        }, $html);
+
+        $html = preg_replace_callback('/<img\s+[^>]*src="doc\/([^"]+)"[^>]*>/', function ($matches) {
+            $imageUrl = $this->router->generate('threebrs_admin_docs_plugin_image', ['filename' => $matches[1]]);
+            return str_replace($matches[0], preg_replace('/src="[^"]+"/', 'src="' . $imageUrl . '"', $matches[0]), $matches[0]);
+        }, $html);
+
+        return $html;
     }
 }

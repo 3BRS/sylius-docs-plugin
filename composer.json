@@ -11,8 +11,7 @@
     "require": {
         "php": "^8.2",
         "league/commonmark": "^2.7",
-        "sylius/sylius": "2.0.*",
-        "symfony/runtime": "^7.3"
+        "sylius/sylius": "2.0.*"
     },
     "require-dev": {
         "behat/behat": "^v3.19.0",

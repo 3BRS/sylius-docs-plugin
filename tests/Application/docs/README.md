@@ -24,7 +24,11 @@
 - Secure access: only admins can view the docs
 
 <p align="center">
-  <img src="https://github.com/3BRS/sylius-analytics-plugin/blob/AK/doc/admin-dashboard-request-logs.png?raw=true" alt="Admin Dashboard Screenshot" />
+  <img src="https://github.com/3BRS/sylius-docs-plugin/blob/SLS-28-Sylius-docs-plugin/doc/documentation_menu.png?raw=true" alt="Admin Screenshot" />
+</p> 
+
+<p align="center">
+  <img src="https://github.com/3BRS/sylius-docs-plugin/blob/SLS-28-Sylius-docs-plugin/doc/doc_index.png?raw=true" alt="Admin Screenshot" />
 </p>
 
 ## Installation
@@ -56,14 +60,12 @@
         ...
         - { resource: "@ThreeBRSSyliusDocsPlugin/config/config.yaml" }
     ```
+5. Define the path to your documentation directory in `config/packages/_sylius.yaml`:
 
-5. Generate and run Doctrine migrations:
-
-    ```bash
-    bin/console doctrine:migrations:diff 
-    bin/console doctrine:migrations:migrate
+    ```yaml
+      parameters:
+          threebrs_sylius_docs_plugin.docs_path: '%kernel.project_dir%/docs'
     ```
-
 ## Usage
 
 - Add a `docs/index.md` file in the root of your Sylius project (**necessary**; acts as your table of contents).

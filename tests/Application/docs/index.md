@@ -13,3 +13,5 @@ Welcome to the internal documentation.
 - [README](README)
 
 - [Empty](empty)
+
+- [Image](image)

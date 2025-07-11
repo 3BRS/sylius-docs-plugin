@@ -1,23 +1,24 @@
+imports:
+  - { resource: ./parameters.yaml }
+
 services:
     _defaults:
-        autowire: true
-        autoconfigure: true
+        autowire: false
+        autoconfigure: false
 
     ThreeBRS\SyliusDocsPlugin\Menu\AdminMenuListener:
+        arguments:
+            - '@translator'
         tags:
             - { name: kernel.event_subscriber }
 
-    League\CommonMark\CommonMarkConverter:
-        class: League\CommonMark\CommonMarkConverter
-        arguments:
-            - []         
+    League\CommonMark\CommonMarkConverter: ~
 
     ThreeBRS\SyliusDocsPlugin\Controller\DocsController:
         public: true
         arguments:
             - '@twig'
             - '@League\CommonMark\CommonMarkConverter'
-            - '@security.authorization_checker'
-            - '@kernel'
+            - '%threebrs_sylius_docs_plugin.docs_path%'
+            - '@router'
 
-       

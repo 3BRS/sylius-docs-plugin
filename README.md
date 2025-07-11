@@ -60,14 +60,12 @@
         ...
         - { resource: "@ThreeBRSSyliusDocsPlugin/config/config.yaml" }
     ```
+5. Define the path to your documentation directory in `config/packages/_sylius.yaml`:
 
-5. Generate and run Doctrine migrations:
-
-    ```bash
-    bin/console doctrine:migrations:diff 
-    bin/console doctrine:migrations:migrate
+    ```yaml
+      parameters:
+          threebrs_sylius_docs_plugin.docs_path: '%kernel.project_dir%/docs'
     ```
-
 ## Usage
 
 - Add a `docs/index.md` file in the root of your Sylius project (**necessary**; acts as your table of contents).

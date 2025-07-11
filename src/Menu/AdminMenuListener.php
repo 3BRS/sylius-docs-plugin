@@ -28,7 +28,7 @@ final class AdminMenuListener implements EventSubscriberInterface
     {
         $event->getMenu()
             ->addChild('docs', [
-                'route' => 'threebrs_admin_docs_index',
+                'route' => 'threebrs_admin_docs_plugin_index',
             ])
             ->setLabel($this->translator->trans('threebrs.ui.docs_plugin.docs_menu_title'))
             ->setLabelAttribute('icon', 'tabler:book');
