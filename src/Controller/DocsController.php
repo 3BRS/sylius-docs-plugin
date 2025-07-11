@@ -8,9 +8,9 @@ use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Twig\Environment as TwigEnvironment;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Environment as TwigEnvironment;
 
 class DocsController
 {
@@ -18,8 +18,9 @@ class DocsController
         private TwigEnvironment $twig,
         private CommonMarkConverter $converter,
         private string $docsPath,
-        private RouterInterface $router
-    ) {}
+        private RouterInterface $router,
+    ) {
+    }
 
     #[IsGranted('ROLE_ADMINISTRATION_ACCESS')]
     public function index(): Response
@@ -52,10 +53,10 @@ class DocsController
         }
 
         $files = is_dir($this->docsPath)
-            ? array_filter(scandir($this->docsPath), fn($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
+            ? array_filter(scandir($this->docsPath), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
             : [];
 
-        $slugs = array_map(fn($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
+        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
         return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/index.html.twig', [
             'html' => $html,
@@ -104,10 +105,10 @@ class DocsController
         }
 
         $files = is_dir($this->docsPath)
-            ? array_filter(scandir($this->docsPath), fn($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
+            ? array_filter(scandir($this->docsPath), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
             : [];
 
-        $slugs = array_map(fn($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
+        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
         return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/show.html.twig', [
             'html' => $html,
@@ -135,7 +136,12 @@ class DocsController
             throw new NotFoundHttpException(sprintf('Image "%s" not found.', $filename));
         }
 
-        return new Response(file_get_contents($imagePath), 200, [
+        $imageContent = file_get_contents($imagePath);
+        if ($imageContent === false) {
+            throw new \RuntimeException(sprintf('Failed to read image file: %s', $imagePath));
+        }
+
+        return new Response($imageContent, 200, [
             'Content-Type' => mime_content_type($imagePath),
             'Content-Disposition' => 'inline',
         ]);
@@ -143,15 +149,21 @@ class DocsController
 
     private function replaceMarkdownLinks(string $html): string
     {
-        $html = preg_replace_callback('/href="([^"\/]+)"/', function ($matches) {
+        // Convert relative Markdown links to router-based Sylius admin routes
+        $html = preg_replace_callback('/href="([^"\/]+)"/', function (array $matches): string {
             $slug = pathinfo($matches[1], \PATHINFO_FILENAME);
-            return 'href="' . $this->router->generate('threebrs_admin_docs_plugin_show', ['slug' => $slug]) . '"';
-        }, $html);
 
-        $html = preg_replace_callback('/<img\s+[^>]*src="doc\/([^"]+)"[^>]*>/', function ($matches) {
-            $imageUrl = $this->router->generate('threebrs_admin_docs_plugin_image', ['filename' => $matches[1]]);
-            return str_replace($matches[0], preg_replace('/src="[^"]+"/', 'src="' . $imageUrl . '"', $matches[0]), $matches[0]);
-        }, $html);
+            return sprintf('href="%s"', $this->router->generate('threebrs_admin_docs_plugin_show', ['slug' => $slug]));
+        }, $html) ?? $html;
+
+        // Convert relative image srcs (e.g., doc/CARLA.png) to plugin image route
+        $html = preg_replace_callback('/<img\s+[^>]*src="doc\/([^"]+)"[^>]*>/i', function (array $matches): string {
+            $original = $matches[0];
+            $filename = $matches[1];
+            $imageUrl = $this->router->generate('threebrs_admin_docs_plugin_image', ['filename' => $filename]);
+
+            return preg_replace('/src="[^"]+"/', 'src="' . $imageUrl . '"', $original) ?? $original;
+        }, $html) ?? $html;
 
         return $html;
     }
