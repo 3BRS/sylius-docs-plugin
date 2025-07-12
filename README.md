@@ -66,6 +66,12 @@
       parameters:
           threebrs_sylius_docs_plugin.docs_path: '%kernel.project_dir%/docs'
     ```
+6. Define the path to your images directory in `config/packages/_sylius.yaml`:
+
+    ```yaml
+      parameters:
+          threebrs_sylius_docs_plugin.image_path_prefix: 'docs' 
+    ```
 ## Usage
 
 - Add a `docs/index.md` file in the root of your Sylius project (**necessary**; acts as your table of contents).

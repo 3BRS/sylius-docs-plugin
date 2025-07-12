@@ -19,6 +19,7 @@ class DocsController
         private CommonMarkConverter $converter,
         private string $docsPath,
         private RouterInterface $router,
+        private string $imagePathPrefix 
     ) {
     }
 
@@ -124,8 +125,8 @@ class DocsController
             throw new NotFoundHttpException('Invalid image filename.');
         }
 
-        $imagePath = realpath(__DIR__ . '/../../doc/' . $filename);
-        $basePath = realpath(__DIR__ . '/../../doc');
+        $imagePath = realpath($this->docsPath . '/' . $filename);
+        $basePath = realpath($this->docsPath);
 
         if (
             $imagePath === false ||
@@ -149,15 +150,16 @@ class DocsController
 
     private function replaceMarkdownLinks(string $html): string
     {
-        // Convert relative Markdown links to router-based Sylius admin routes
         $html = preg_replace_callback('/href="([^"\/]+)"/', function (array $matches): string {
             $slug = pathinfo($matches[1], \PATHINFO_FILENAME);
 
             return sprintf('href="%s"', $this->router->generate('threebrs_admin_docs_plugin_show', ['slug' => $slug]));
         }, $html) ?? $html;
 
-        // Convert relative image srcs (e.g., doc/CARLA.png) to plugin image route
-        $html = preg_replace_callback('/<img\s+[^>]*src="doc\/([^"]+)"[^>]*>/i', function (array $matches): string {
+        $escapedPrefix = preg_quote($this->imagePathPrefix, '/');
+        $pattern = sprintf('/<img\s+[^>]*src="%s\/([^"]+)"[^>]*>/i', $escapedPrefix);
+        
+        $html = preg_replace_callback($pattern, function (array $matches): string {
             $original = $matches[0];
             $filename = $matches[1];
             $imageUrl = $this->router->generate('threebrs_admin_docs_plugin_image', ['filename' => $filename]);

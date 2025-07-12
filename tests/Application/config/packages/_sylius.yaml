@@ -10,7 +10,7 @@ imports:
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
     threebrs_sylius_docs_plugin.docs_path: '%kernel.project_dir%/docs'
-
+    threebrs_sylius_docs_plugin.image_path_prefix: 'docs' 
 
 sylius_shop:
     product_grid:
