@@ -19,7 +19,7 @@ class DocsController
         private CommonMarkConverter $converter,
         private string $docsPath,
         private RouterInterface $router,
-        private string $imagePathPrefix 
+        private string $imagePathPrefix,
     ) {
     }
 
@@ -158,7 +158,7 @@ class DocsController
 
         $escapedPrefix = preg_quote($this->imagePathPrefix, '/');
         $pattern = sprintf('/<img\s+[^>]*src="%s\/([^"]+)"[^>]*>/i', $escapedPrefix);
-        
+
         $html = preg_replace_callback($pattern, function (array $matches): string {
             $original = $matches[0];
             $filename = $matches[1];
