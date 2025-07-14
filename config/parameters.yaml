@@ -1,4 +1,3 @@
 parameters:
     threebrs_sylius_docs_plugin.docs_path: '%kernel.project_dir%/docs'
-    threebrs_sylius_docs_plugin.image_path_prefix: 'docs' 
 

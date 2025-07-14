@@ -19,7 +19,6 @@ class DocsController
         private CommonMarkConverter $converter,
         private string $docsPath,
         private RouterInterface $router,
-        private string $imagePathPrefix,
     ) {
     }
 
@@ -156,15 +155,25 @@ class DocsController
             return sprintf('href="%s"', $this->router->generate('threebrs_admin_docs_plugin_show', ['slug' => $slug]));
         }, $html) ?? $html;
 
-        $escapedPrefix = preg_quote($this->imagePathPrefix, '/');
-        $pattern = sprintf('/<img\s+[^>]*src="%s\/([^"]+)"[^>]*>/i', $escapedPrefix);
-
-        $html = preg_replace_callback($pattern, function (array $matches): string {
+        $html = preg_replace_callback('/<img\s+[^>]*src="([^"\/]+)"[^>]*>/i', function (array $matches): string {
             $original = $matches[0];
             $filename = $matches[1];
-            $imageUrl = $this->router->generate('threebrs_admin_docs_plugin_image', ['filename' => $filename]);
 
-            return preg_replace('/src="[^"]+"/', 'src="' . $imageUrl . '"', $original) ?? $original;
+            $imagePath = realpath($this->docsPath . '/' . $filename);
+            $basePath = realpath($this->docsPath);
+
+            if (
+                $imagePath !== false &&
+                $basePath !== false &&
+                str_starts_with($imagePath, $basePath) &&
+                is_file($imagePath)
+            ) {
+                $imageUrl = $this->router->generate('threebrs_admin_docs_plugin_image', ['filename' => $filename]);
+
+                return preg_replace('/src="[^"]+"/', 'src="' . $imageUrl . '"', $original) ?? $original;
+            }
+
+            return $original;
         }, $html) ?? $html;
 
         return $html;
