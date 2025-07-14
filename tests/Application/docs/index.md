@@ -2,16 +2,16 @@
 
 Welcome to the internal documentation.
 
-- [Getting Started](getting-started)
+- [Getting Started](getting-started.md)
 
-- [Product Import](product-import)
+- [Product Import](product-import.md)
 
-- [Shipping Setup](shipping-setup)
+- [Shipping Setup](shipping-setup.md)
 
-- [Markdown Text](md)
+- [Markdown Text](md.md)
 
-- [README](README)
+- [README](README.md)
 
-- [Empty](empty)
+- [Empty](empty.md)
 
-- [Image](image)
+- [Image](image.md)

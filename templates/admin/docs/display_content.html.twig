@@ -7,9 +7,11 @@
     <div class="row">
         <div class="col-12">
             {% if slug != 'index' %}
-                <a href="{{ path('threebrs_admin_docs_plugin_index') }}" class="btn btn-outline-primary mb-3">
-                    {{ 'threebrs.ui.docs_plugin.back_to_index'|trans }}
-                </a>
+                 <div class="d-flex justify-content-end mb-3">
+                    <a href="{{ path('threebrs_admin_docs_plugin_index') }}" class="btn btn-outline-primary">
+                        {{ 'threebrs.ui.docs_plugin.back_to_index'|trans }}
+                    </a>
+                </div>
             {% endif %}
 
             <div class="card">

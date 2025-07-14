@@ -76,12 +76,11 @@
 
     Welcome to the internal documentation.
 
-    - [Getting Started](getting-started)
-    - [Product Import](product-import)
-    - [Shipping Setup](shipping-setup)
-    - [Markdown Text](md)
-    - [README](README)
-    - [Empty](empty)
+    - [Getting Started](getting-started.md)
+
+    - [Product Import](product-import.md)
+
+    - [Shipping Setup](shipping-setup.md)
     ```
 
 - Access your documentation using the **Documentation** link in the admin panel sidebar.
