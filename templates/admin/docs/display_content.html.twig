@@ -1,0 +1,33 @@
+{% set html = hookable_metadata.context.html|default(null) %}
+{% set slug = hookable_metadata.context.slug|default('index') %}
+{% set slugs = hookable_metadata.context.slugs|default([]) %}
+{% set index_exists = hookable_metadata.context.index_exists|default(true) %}
+
+<div class="container-fluid my-4">
+    <div class="row">
+        <div class="col-12">
+            {% if slug != 'index' %}
+                 <div class="d-flex justify-content-end mb-3">
+                    <a href="{{ path('threebrs_admin_docs_plugin_index') }}" class="btn btn-outline-primary">
+                        {{ 'threebrs.ui.docs_plugin.back_to_index'|trans }}
+                    </a>
+                </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-body">
+                    {% if html is null and slug == 'index' %}
+                        <div class="alert alert-warning" role="alert">
+                            <h4 class="alert-heading">{{ 'threebrs.ui.docs_plugin.missing_docs'|trans }}</h4>
+                            <p>
+                                {{ 'threebrs.ui.docs_plugin.missing_docs_warning'|trans }}      
+                            </p>
+                        </div>
+                    {% else %}
+                        {{ html|raw }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+sylius_twig_hooks:
+    hooks:
+        "threebrs_sylius_docs_plugin.sylius_admin.docs.index":
+            sidebar:
+                template: "@SyliusAdmin/shared/crud/common/sidebar.html.twig"
+                priority: 200
+            navbar:
+                template: "@SyliusAdmin/shared/crud/common/navbar.html.twig"
+                priority: 100
+            content:
+                template: "@SyliusAdmin/shared/crud/common/content.html.twig"
+                priority: 0
+
+        "threebrs_sylius_docs_plugin.sylius_admin.docs.index.content":
+            flashes:
+                template: "@SyliusAdmin/shared/crud/common/content/flashes.html.twig"
+                priority: 300
+            header:
+                template: "@SyliusAdmin/shared/crud/common/content/header.html.twig"
+                priority: 200
+            custom:
+                template: "@ThreeBRSSyliusDocsPlugin/admin/shared/layout/resourceless/custom.html.twig"
+                priority: 100
+            footer:
+                template: "@SyliusAdmin/shared/crud/common/content/footer.html.twig"
+                priority: -100
+
+        "threebrs_sylius_docs_plugin.sylius_admin.docs.index.content.header":
+            breadcrumbs:
+                template: "@SyliusAdmin/shared/crud/index/content/header/breadcrumbs.html.twig"
+                priority: 100
+            title_block:
+                template: "@SyliusAdmin/shared/crud/common/content/header/title_block.html.twig"
+                priority: 0
+
+        "threebrs_sylius_docs_plugin.sylius_admin.docs.index.content.header.title_block":
+            title:
+                template: "@SyliusAdmin/shared/crud/common/content/header/title_block/title.html.twig"
+                priority: 100
+            actions:
+                template: "@SyliusAdmin/shared/crud/common/content/header/title_block/actions.html.twig"
+                priority: 0
+
+        "threebrs_sylius_docs_plugin.sylius_admin.docs.index.content.custom":
+            docs_plugin_content:
+                template: "@ThreeBRSSyliusDocsPlugin/admin/docs/display_content.html.twig"
+                priority: 0
