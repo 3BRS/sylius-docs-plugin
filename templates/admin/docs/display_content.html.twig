@@ -8,8 +8,8 @@
         <div class="col-12">
             {% if slug != 'index' %}
                  <div class="d-flex justify-content-end mb-3">
-                    <a href="{{ path('threebrs_admin_docs_plugin_index') }}" class="btn btn-outline-primary">
-                        {{ 'threebrs.ui.docs_plugin.back_to_index'|trans }}
+                    <a href="{{ path('threebrs_admin_documentation_plugin_index') }}" class="btn btn-outline-primary">
+                        {{ 'threebrs_documentation_plugin.ui.admin.documentation.back_to_index'|trans }}
                     </a>
                 </div>
             {% endif %}
@@ -18,9 +18,9 @@
                 <div class="card-body">
                     {% if html is null and slug == 'index' %}
                         <div class="alert alert-warning" role="alert">
-                            <h4 class="alert-heading">{{ 'threebrs.ui.docs_plugin.missing_docs'|trans }}</h4>
+                            <h4 class="alert-heading">{{ 'threebrs_documentation_plugin.ui.admin.documentation.missing_documentation'|trans }}</h4>
                             <p>
-                                {{ 'threebrs.ui.docs_plugin.missing_docs_warning'|trans }}      
+                                {{ 'threebrs_documentation_plugin.ui.admin.documentation.missing_documentation'|trans }}
                             </p>
                         </div>
                     {% else %}

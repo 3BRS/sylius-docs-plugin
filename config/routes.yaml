@@ -1,21 +1,18 @@
-threebrs_admin_docs_plugin_index:
-    path: /docs
-    controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::index
-    methods: [GET]
+threebrs_admin_documentation_plugin_index:
+    path: /documentation
+    controller: ThreeBRS\SyliusDocumentationPlugin\Controller\DocumentationController::index
+    methods: [ GET ]
 
-threebrs_admin_docs_plugin_show:
-    path: /docs/{slug}
-    controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::show
-    methods: [GET]
+threebrs_admin_documentation_plugin_show:
+    path: /documentation/{slug}
+    controller: ThreeBRS\SyliusDocumentationPlugin\Controller\DocumentationController::show
+    methods: [ GET ]
     requirements:
         slug: '[a-zA-Z0-9_\-]+'
 
-threebrs_admin_docs_plugin_image:
-    path: /docs/doc/{filename}
-    controller: ThreeBRS\SyliusDocsPlugin\Controller\DocsController::image
-    methods: [GET]
+threebrs_admin_documentation_plugin_image:
+    path: /documentation/document/{filename}
+    controller: ThreeBRS\SyliusDocumentationPlugin\Controller\DocumentationController::image
+    methods: [ GET ]
     requirements:
         filename: '.+'
-
-
-        
