@@ -1,12 +1,10 @@
-threebrs:
+threebrs_documentation_plugin:
     ui:
-        docs_plugin:
-            tab_title: Documentation
-            header: Documentation
-            docs_menu_title: Documetation
-            toc: Documentation Pages
-            missing_docs: Missing Documentation
-            missing_docs_warning: Please create a docs/index.md file in the root of your Sylius App.
-            back_to_index: Index
-
-            
+        admin:
+            documentation:
+                tab_title: Documentation
+                header: Documentation
+                menu_title: Documentation
+                missing_documentation: Missing Documentation
+                missing_documentation_warning: Please create a documentation/index.md file in the root of your Sylius App.
+                back_to_index: Index

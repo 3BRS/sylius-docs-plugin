@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="true"/>
+
+        <!-- Page Objects -->
+        <service id="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\Documentation\IndexPageInterface"
+                 class="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\Documentation\IndexPage"
+                 parent="sylius.behat.symfony_page" public="false">
+        </service>
+
+        <service id="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\Documentation\ShowPageInterface"
+                 class="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\Documentation\ShowPage"
+                 parent="sylius.behat.symfony_page" public="false">
+        </service>
+
+        <service id="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\ExtendedDashboardPageInterface"
+                 class="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\ExtendedDashboardPage"
+                 parent="sylius.behat.page.admin.dashboard" public="false">
+        </service>
+
+        <!-- Setup Context -->
+        <service id="tests.threebrs_sylius_documentation_plugin.behat.context.setup.docs"
+                 class="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Context\Setup\DocumentationContext"
+                 public="true">
+            <argument type="string">%threebrs_sylius_documentation_plugin.docs_path%</argument>
+            <tag name="fob.context_service"/>
+        </service>
+
+        <!-- UI Context -->
+        <service id="tests.threebrs_sylius_documentation_plugin.behat.context.ui.admin.managing_documentation"
+                 class="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Context\Ui\Admin\ManagingDocumentationContext"
+                 public="true">
+            <argument type="service" id="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\Documentation\IndexPageInterface"/>
+            <argument type="service" id="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\Documentation\ShowPageInterface"/>
+            <argument type="service" id="Tests\ThreeBRS\SyliusDocumentationPlugin\Behat\Page\Admin\ExtendedDashboardPageInterface"/>
+            <argument type="service" id="behat.mink.default_session"/>
+            <argument type="service" id="router"/>
+            <tag name="fob.context_service"/>
+        </service>
+    </services>
+</container>

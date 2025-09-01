@@ -1,12 +1,9 @@
-imports:
-  - { resource: ./parameters.yaml }
-
 services:
     _defaults:
         autowire: false
         autoconfigure: false
 
-    ThreeBRS\SyliusDocsPlugin\Menu\AdminMenuListener:
+    ThreeBRS\SyliusDocumentationPlugin\Menu\AdminMenuListener:
         arguments:
             - '@translator'
         tags:
@@ -14,10 +11,10 @@ services:
 
     League\CommonMark\CommonMarkConverter: ~
 
-    ThreeBRS\SyliusDocsPlugin\Controller\DocsController:
+    ThreeBRS\SyliusDocumentationPlugin\Controller\DocumentationController:
         public: true
         arguments:
             - '@twig'
             - '@League\CommonMark\CommonMarkConverter'
-            - '%threebrs_sylius_docs_plugin.docs_path%'
+            - '%threebrs_sylius_documentation_plugin.docs_path%'
             - '@router'

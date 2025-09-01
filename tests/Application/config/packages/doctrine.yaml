@@ -22,5 +22,5 @@ doctrine:
                 type: attribute
                 is_bundle: false
                 dir: "%kernel.project_dir%/src/Entity"
-                prefix: 'ThreeBRS\SyliusDocsPlugin\Entity'
+                prefix: 'ThreeBRS\SyliusDocumentationPlugin\Entity'
                 alias: App

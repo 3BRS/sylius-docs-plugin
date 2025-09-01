@@ -1,0 +1,2 @@
+imports:
+    - suites/managing_documentation.yml

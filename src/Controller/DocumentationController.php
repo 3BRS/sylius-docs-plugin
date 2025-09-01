@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusDocsPlugin\Controller;
+namespace ThreeBRS\SyliusDocumentationPlugin\Controller;
 
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Environment as TwigEnvironment;
 
-class DocsController
+readonly class DocumentationController
 {
     public function __construct(
         private TwigEnvironment $twig,
@@ -22,7 +21,6 @@ class DocsController
     ) {
     }
 
-    #[IsGranted('ROLE_ADMINISTRATION_ACCESS')]
     public function index(): Response
     {
         $indexPath = realpath($this->docsPath . '/index.md');
@@ -58,14 +56,13 @@ class DocsController
 
         $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
-        return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/index.html.twig', [
+        return new Response($this->twig->render('@ThreeBRSSyliusDocumentationPlugin/admin/docs/index.html.twig', [
             'html' => $html,
             'slugs' => $slugs,
             'index_exists' => $indexExists,
         ]));
     }
 
-    #[IsGranted('ROLE_ADMINISTRATION_ACCESS')]
     public function show(string $slug = 'index'): Response
     {
         if (str_contains($slug, '..') || str_contains($slug, '/')) {
@@ -110,14 +107,13 @@ class DocsController
 
         $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
-        return new Response($this->twig->render('@ThreeBRSSyliusDocsPlugin/admin/docs/show.html.twig', [
+        return new Response($this->twig->render('@ThreeBRSSyliusDocumentationPlugin/admin/docs/show.html.twig', [
             'html' => $html,
             'slug' => $slug,
             'slugs' => $slugs,
         ]));
     }
 
-    #[IsGranted('ROLE_ADMINISTRATION_ACCESS')]
     public function image(string $filename): Response
     {
         if (str_contains($filename, '..') || str_contains($filename, '/')) {
@@ -152,7 +148,11 @@ class DocsController
         $html = preg_replace_callback('/href="([^"\/]+)"/', function (array $matches): string {
             $slug = pathinfo($matches[1], \PATHINFO_FILENAME);
 
-            return sprintf('href="%s"', $this->router->generate('threebrs_admin_docs_plugin_show', ['slug' => $slug]));
+            if ($slug === 'index') {
+                return sprintf('href="%s"', $this->router->generate('threebrs_admin_documentation_plugin_index'));
+            }
+
+            return sprintf('href="%s"', $this->router->generate('threebrs_admin_documentation_plugin_show', ['slug' => $slug]));
         }, $html) ?? $html;
 
         $html = preg_replace_callback('/<img\s+[^>]*src="([^"\/]+)"[^>]*>/i', function (array $matches): string {
@@ -168,7 +168,7 @@ class DocsController
                 str_starts_with($imagePath, $basePath) &&
                 is_file($imagePath)
             ) {
-                $imageUrl = $this->router->generate('threebrs_admin_docs_plugin_image', ['filename' => $filename]);
+                $imageUrl = $this->router->generate('threebrs_admin_documentation_plugin_image', ['filename' => $filename]);
 
                 return preg_replace('/src="[^"]+"/', 'src="' . $imageUrl . '"', $original) ?? $original;
             }

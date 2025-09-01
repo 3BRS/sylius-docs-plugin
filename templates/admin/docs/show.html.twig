@@ -1,9 +1,9 @@
-{% extends '@ThreeBRSSyliusDocsPlugin/admin/shared/layout/resourceless/resourceless.html.twig' %}
+{% extends '@ThreeBRSSyliusDocumentationPlugin/admin/shared/layout/resourceless/resourceless.html.twig' %}
 
 {% block title %}
-	{{ 'threebrs.ui.docs_plugin.tab_title'|trans }}
+	{{ 'threebrs_documentation_plugin.ui.admin.documentation.tab_title'|trans }}
 {% endblock %}
 
 {% block body %}
-    {% hook 'threebrs_sylius_docs_plugin.sylius_admin.docs.index' %}
+    {% hook 'threebrs_sylius_documentation_plugin.sylius_admin.documentation.index' %}
 {% endblock %}

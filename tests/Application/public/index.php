@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Tests\ThreeBRS\SyliusDocsPlugin\Application\Kernel;
+use Tests\ThreeBRS\SyliusDocumentationPlugin\Application\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 

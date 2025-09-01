@@ -6,14 +6,14 @@
 
 <h1 align="center">
   Sylius Docs Plugin <br />
-  <a href="https://packagist.org/packages/3brs/sylius-docs-plugin" title="License" target="_blank">
-    <img src="https://img.shields.io/packagist/l/3brs/sylius-docs-plugin" alt="License" />
+  <a href="https://packagist.org/packages/3brs/sylius-documentation-plugin" title="License" target="_blank">
+    <img src="https://img.shields.io/packagist/l/3brs/sylius-documentation-plugin" alt="License" />
   </a>
-  <a href="https://packagist.org/packages/3brs/sylius-docs-plugin" title="Version" target="_blank">
-    <img src="https://img.shields.io/packagist/v/3brs/sylius-docs-plugin" alt="Version" />
+  <a href="https://packagist.org/packages/3brs/sylius-documentation-plugin" title="Version" target="_blank">
+    <img src="https://img.shields.io/packagist/v/3brs/sylius-documentation-plugin" alt="Version" />
   </a>
-  <a href="https://circleci.com/gh/3BRS/sylius-docs-plugin" title="Build status" target="_blank">
-    <img src="https://circleci.com/gh/3BRS/sylius-docs-plugin.svg?style=shield" alt="Build Status" />
+  <a href="https://circleci.com/gh/3BRS/sylius-documentation-plugin" title="Build status" target="_blank">
+    <img src="https://circleci.com/gh/3BRS/sylius-documentation-plugin.svg?style=shield" alt="Build Status" />
   </a>
 </h1>
 
@@ -24,11 +24,11 @@
 - Secure access: only admins can view the docs
 
 <p align="center">
-  <img src="https://github.com/3BRS/sylius-docs-plugin/blob/SLS-28-Sylius-docs-plugin/doc/documentation_menu.png?raw=true" alt="Admin Screenshot" />
+  <img src="https://github.com/3BRS/sylius-documentation-plugin/blob/SLS-28-Sylius-docs-plugin/doc/documentation_menu.png?raw=true" alt="Admin Screenshot" />
 </p> 
 
 <p align="center">
-  <img src="https://github.com/3BRS/sylius-docs-plugin/blob/SLS-28-Sylius-docs-plugin/doc/doc_index.png?raw=true" alt="Admin Screenshot" />
+  <img src="https://github.com/3BRS/sylius-documentation-plugin/blob/SLS-28-Sylius-docs-plugin/doc/doc_index.png?raw=true" alt="Admin Screenshot" />
 </p>
 
 ## Installation
@@ -36,20 +36,20 @@
 1. Run:
 
     ```bash
-    composer require 3brs/sylius-docs-plugin
+    composer require 3brs/sylius-documentation-plugin
     ```
 
 2. Register the bundle in your `config/bundles.php`:
 
     ```php
-    ThreeBRS\SyliusDocsPlugin\ThreeBRSSyliusDocsPlugin::class => ['all' => true],
+    ThreeBRS\SyliusDocumentationPlugin\ThreeBRSSyliusDocumentationPlugin::class => ['all' => true],
     ```
 
 3. Import the plugin's routing files in `config/routes.yaml`:
 
     ```yaml
-    threebrs_docs_plugin_routing_file:
-        resource: "@ThreeBRSSyliusDocsPlugin/config/routes.yaml"
+    threebrs_documentation_plugin_routing_file:
+        resource: "@ThreeBRSSyliusDocumentationPlugin/config/routes.yaml"
         prefix: '%sylius_admin.path_name%'
     ```
 
@@ -58,13 +58,13 @@
     ```yaml
     imports:
         ...
-        - { resource: "@ThreeBRSSyliusDocsPlugin/config/config.yaml" }
+        - { resource: "@ThreeBRSSyliusDocumentationPlugin/config/config.yaml" }
     ```
 5. Define the path to your documentation directory in `config/packages/_sylius.yaml`:
 
     ```yaml
-      parameters:
-          threebrs_sylius_docs_plugin.docs_path: '%kernel.project_dir%/docs'
+    parameters:
+        threebrs_sylius_documentation_plugin.docs_path: '%kernel.project_dir%/docs'
     ```
 ## Usage
 

@@ -1,0 +1,13 @@
+default:
+    suites:
+        managing_documentation:
+            contexts:
+                - sylius.behat.context.hook.doctrine_orm
+
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.admin_security
+                - tests.threebrs_sylius_documentation_plugin.behat.context.setup.docs
+                - tests.threebrs_sylius_documentation_plugin.behat.context.ui.admin.managing_documentation
+
+            filters:
+                tags: "@managing_documentation && @ui"

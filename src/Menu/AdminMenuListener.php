@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusDocsPlugin\Menu;
+namespace ThreeBRS\SyliusDocumentationPlugin\Menu;
 
 use Sylius\Bundle\UiBundle\Menu\Event\MenuBuilderEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,10 +27,10 @@ final class AdminMenuListener implements EventSubscriberInterface
     public function addDocumentationMenuItem(MenuBuilderEvent $event): void
     {
         $event->getMenu()
-            ->addChild('docs', [
-                'route' => 'threebrs_admin_docs_plugin_index',
+            ->addChild('threebrs_documentation_plugin', [
+                'route' => 'threebrs_admin_documentation_plugin_index',
             ])
-            ->setLabel($this->translator->trans('threebrs.ui.docs_plugin.docs_menu_title'))
+            ->setLabel($this->translator->trans('threebrs_documentation_plugin.ui.admin.documentation.menu_title'))
             ->setLabelAttribute('icon', 'tabler:book');
     }
 }

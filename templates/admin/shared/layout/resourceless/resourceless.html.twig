@@ -6,12 +6,12 @@
    Change it by passing 'title' when rendering the template. #}
 {% set metadata = metadata|default({
     applicationName: 'threebrs',
-    pluralName: 'docs_plugin.header',
+    pluralName: 'documentation_plugin.header',
     name: '_empty',
 }) %}
 
 {% set configuration = configuration|default({
-    title: 'threebrs.ui.docs_plugin.tab_title'|trans
+    title: 'threebrs_documentation_plugin.ui.admin.documentation.tab_title'|trans
 }) %}
 
 {% set resources = resources|default({
@@ -32,10 +32,10 @@
 {# Block for stylesheets - delegates to hook #}
 {% block stylesheets %}
 	{{ parent() }}
-{% hook 'threebrs_sylius_docs_plugin.base#stylesheets' %}
+{% hook 'threebrs_sylius_documentation_plugin.base#stylesheets' %}
 {% endblock %}
 
 {# Block for javascripts - delegates to hook #}
 {% block javascripts %}
 	{{ parent() }}
-{% hook 'threebrs_sylius_docs_plugin.base#javascripts' %}{% endblock %}
+{% hook 'threebrs_sylius_documentation_plugin.base#javascripts' %}{% endblock %}

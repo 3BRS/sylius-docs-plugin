@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusDocsPlugin\DependencyInjection;
+namespace ThreeBRS\SyliusDocumentationPlugin\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class ThreeBRSSyliusDocsExtension extends Extension
+final class ThreeBRSSyliusDocumentationExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

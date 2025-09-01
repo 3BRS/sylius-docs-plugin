@@ -1,4 +1,4 @@
 suites:
     main:
-        namespace: ThreeBRS\SyliusDocsPlugin
-        psr4_prefix: ThreeBRS\SyliusDocsPlugin
+        namespace: ThreeBRS\SyliusDocumentationPlugin
+        psr4_prefix: ThreeBRS\SyliusDocumentationPlugin

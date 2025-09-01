@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ThreeBRS\SyliusDocsPlugin;
+namespace ThreeBRS\SyliusDocumentationPlugin;
 
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class ThreeBRSSyliusDocsPlugin extends Bundle
+final class ThreeBRSSyliusDocumentationPlugin extends Bundle
 {
     use SyliusPluginTrait;
 

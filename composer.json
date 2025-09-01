@@ -1,7 +1,7 @@
 {
-    "name": "3brs/sylius-docs-plugin",
+    "name": "3brs/sylius-documentation-plugin",
     "type": "sylius-plugin",
-    "description": "Docs plugin for Sylius Admin Panel.",
+    "description": "Documentation plugin for Sylius Admin Panel.",
     "keywords": [
         "sylius",
         "sylius-plugin",
@@ -13,7 +13,6 @@
         "sylius/sylius": "2.0.*",
         "league/commonmark": "^2.7",
         "ext-fileinfo": "*"
-
     },
     "require-dev": {
         "behat/behat": "^v3.19.0",
@@ -49,6 +48,7 @@
         "symfony/css-selector": "^6.4|^7.1",
         "symfony/mime": "^6.4|^7.1",
         "symfony/web-link": "^6.4|^7.1",
+        "symfony/property-info": "^6.4|^7.1",
         "doctrine/annotations": "^2.0.2",
         "symplify/easy-coding-standard": "^12.0",
         "sylius/sylius-rector": "^v3.0.0"
@@ -61,6 +61,7 @@
         "doctrine/data-fixtures": "<1.5.1",
         "doctrine/dbal": "<2.13.3",
         "doctrine/doctrine-bundle": "<2.8.0",
+        "doctrine/orm": "<2.19.0",
         "friendsofsymfony/rest-bundle": "<3.1.0",
         "jms/serializer-bundle": "<4.2.0",
         "masterminds/html5": "<2.7.5",
@@ -89,23 +90,15 @@
             "symfony/runtime": true
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0-dev"
-        },
-        "symfony": {
-            "require": "^6.4"
-        }
-    },
     "autoload": {
         "psr-4": {
-            "ThreeBRS\\SyliusDocsPlugin\\": "src/"
+            "ThreeBRS\\SyliusDocumentationPlugin\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\ThreeBRS\\SyliusDocsPlugin\\": "tests/",
-            "Tests\\ThreeBRS\\SyliusDocsPlugin\\Behat\\": "tests/Behat/"
+            "Tests\\ThreeBRS\\SyliusDocumentationPlugin\\": "tests/",
+            "Tests\\ThreeBRS\\SyliusDocumentationPlugin\\Behat\\": "tests/Behat/"
         }
     },
     "scripts": {
