@@ -6,5 +6,5 @@ threebrs_documentation_plugin:
                 header: Documentation
                 menu_title: Documentation
                 missing_documentation: Missing Documentation
-                missing_documentation_warning: Please create a documentation/index.md file in the root of your Sylius App to provide documentation content.
+                missing_documentation_warning: Please create a %docs_path%/index.md file in the root of your Sylius App to provide documentation content.
                 back_to_index: Index

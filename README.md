@@ -60,11 +60,11 @@
         # ...
         - { resource: "@ThreeBRSSyliusDocumentationPlugin/config/config.yaml" }
     ```
-5. (Optional) Redefine the path to your documentation directory in `config/parameters.yaml`:
+5. (Optional) Redefine the path to your documentation directory in `config/bundles/threebrs_sylius_documentation.yaml`:
 
     ```yaml
-     parameters:
-         threebrs_sylius_documentation_plugin.docs_path: '%kernel.project_dir%/documentation'
+    threebrs_sylius_documentation:
+        docs_path: '%kernel.cache_dir%/behat_docs'
     ```
 ## Usage
 
