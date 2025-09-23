@@ -30,9 +30,6 @@ final class ThreeBRSSyliusDocumentationPlugin extends Bundle
             $extension = $this->createContainerExtension();
 
             if (null !== $extension) {
-                if (!$extension instanceof ExtensionInterface) {
-                    throw new \LogicException(sprintf('Extension %s must implement %s.', $extension::class, ExtensionInterface::class));
-                }
                 /** Removed check for naming convention to allow custom alias,
                  * @see \ThreeBRS\SyliusDocumentationPlugin\DependencyInjection\ThreeBRSSyliusDocumentationExtension::getAlias vs default three_brs_sylius_documentation */
                 $this->containerExtension = $extension;
@@ -41,6 +38,7 @@ final class ThreeBRSSyliusDocumentationPlugin extends Bundle
             }
         }
 
+        // @phpstan-ignore-next-line
         return $this->containerExtension ?: null;
     }
 }

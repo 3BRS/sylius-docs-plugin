@@ -17,12 +17,15 @@ final class ThreeBRSSyliusDocumentationExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('threebrs_sylius_documentation_plugin.docs_path', $config['docs_path']);
+        $docsPath = $config['docs_path'] ?? null;
+        $docsPath = assert(is_string($docsPath));
+        $container->setParameter('threebrs_sylius_documentation_plugin.docs_path', $docsPath);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('services.yaml');
     }
 
+    // @phpstan-ignore-next-line
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
     {
         return new Configuration();

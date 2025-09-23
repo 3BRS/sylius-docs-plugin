@@ -17,6 +17,7 @@ readonly class DocumentationController
         private TwigEnvironment $twig,
         private CommonMarkConverter $converter,
         private string $docsPath,
+        private string $projectDir,
         private RouterInterface $router,
     ) {
     }
@@ -51,15 +52,22 @@ readonly class DocumentationController
         }
 
         $files = is_dir($this->docsPath)
-            ? array_filter(scandir($this->docsPath), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
+            ? array_filter(scandir($this->docsPath) ?: [], fn (
+                $file,
+            ) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
             : [];
 
-        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
+        $slugs = array_map(fn (
+            $file,
+        ) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
         return new Response($this->twig->render('@ThreeBRSSyliusDocumentationPlugin/admin/docs/index.html.twig', [
             'html' => $html,
             'slugs' => $slugs,
             'index_exists' => $indexExists,
+            'relative_docs_path' => str_starts_with($this->docsPath, $this->projectDir)
+                ? ltrim(substr($this->docsPath, strlen($this->projectDir)), '/')
+                : $this->docsPath,
         ]));
     }
 
@@ -102,10 +110,14 @@ readonly class DocumentationController
         }
 
         $files = is_dir($this->docsPath)
-            ? array_filter(scandir($this->docsPath), fn ($file) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
+            ? array_filter(scandir($this->docsPath) ?: [], fn (
+                $file,
+            ) => pathinfo($file, \PATHINFO_EXTENSION) === 'md')
             : [];
 
-        $slugs = array_map(fn ($file) => pathinfo($file, \PATHINFO_FILENAME), $files);
+        $slugs = array_map(fn (
+            $file,
+        ) => pathinfo($file, \PATHINFO_FILENAME), $files);
 
         return new Response($this->twig->render('@ThreeBRSSyliusDocumentationPlugin/admin/docs/show.html.twig', [
             'html' => $html,
@@ -145,7 +157,9 @@ readonly class DocumentationController
 
     private function replaceMarkdownLinks(string $html): string
     {
-        $html = preg_replace_callback('/href="([^"\/]+)"/', function (array $matches): string {
+        $html = preg_replace_callback('/href="([^"\/]+)"/', function (
+            array $matches,
+        ): string {
             $slug = pathinfo($matches[1], \PATHINFO_FILENAME);
 
             if ($slug === 'index') {
@@ -155,7 +169,9 @@ readonly class DocumentationController
             return sprintf('href="%s"', $this->router->generate('threebrs_admin_documentation_plugin_show', ['slug' => $slug]));
         }, $html) ?? $html;
 
-        $html = preg_replace_callback('/<img\s+[^>]*src="([^"\/]+)"[^>]*>/i', function (array $matches): string {
+        $html = preg_replace_callback('/<img\s+[^>]*src="([^"\/]+)"[^>]*>/i', function (
+            array $matches,
+        ): string {
             $original = $matches[0];
             $filename = $matches[1];
 
