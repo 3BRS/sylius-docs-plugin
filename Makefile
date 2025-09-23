@@ -22,8 +22,7 @@ init:
 	./bin-docker/php ./bin/console --env="$(APP_ENV)" assets:install
 	./bin-docker/yarn --cwd=tests/Application install --pure-lockfile
 	GULP_ENV=prod ./bin-docker/yarn --cwd=tests/Application build
-	chmod -R 0777 tests/Application/var
-	chmod -R 0777 tests/Application/public
+	@make var
 
 init-tests:
 	which docker > /dev/null || (echo "Please install docker binary" && exit 1)

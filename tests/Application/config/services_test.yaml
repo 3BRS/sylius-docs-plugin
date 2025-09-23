@@ -2,8 +2,8 @@ imports:
     - { resource: "../../Behat/Resources/services.xml" }
     - { resource: "../../../vendor/sylius/sylius/src/Sylius/Behat/Resources/config/services.xml" }
 
-parameters:
-    threebrs_sylius_documentation_plugin.docs_path: '%kernel.cache_dir%/behat_docs'
+threebrs_sylius_documentation:
+    docs_path: '%kernel.cache_dir%/behat_docs'
 
 # workaround needed for strange "test.client.history" problem
 # see https://github.com/FriendsOfBehat/SymfonyExtension/issues/88
