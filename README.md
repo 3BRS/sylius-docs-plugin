@@ -24,12 +24,12 @@
 - Secure access: only admins can view the docs
 
 <p align="center">
-  <img src="https://github.com/3BRS/sylius-documentation-plugin/blob/SLS-28-Sylius-docs-plugin/doc/documentation_menu.png?raw=true" alt="Admin Screenshot" />
-</p> 
+  <img src="docs/docs_index_example.png?raw=true" alt="Admin Documentation Index" style="max-width:500px;" />
+</p>
 
 <p align="center">
-  <img src="https://github.com/3BRS/sylius-documentation-plugin/blob/SLS-28-Sylius-docs-plugin/doc/doc_index.png?raw=true" alt="Admin Screenshot" />
-</p>
+  <img src="./docs/docs_item_example.png?raw=true" alt="Admin Documentation Item" style="max-width:500px;" />
+</p> 
 
 ## Installation
 
@@ -57,10 +57,10 @@
 
     ```yaml
     imports:
-        ...
+        # ...
         - { resource: "@ThreeBRSSyliusDocumentationPlugin/config/config.yaml" }
     ```
-5. Define the path to your documentation directory in `config/packages/_sylius.yaml`:
+5. (Optional) Redefine the path to your documentation directory in `config/parameters.yaml`:
 
     ```yaml
      parameters:
