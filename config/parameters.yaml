@@ -1,2 +1,0 @@
-parameters:
-    threebrs_sylius_documentation_plugin.docs_path: '%kernel.project_dir%/documentation'
