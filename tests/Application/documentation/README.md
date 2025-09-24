@@ -48,7 +48,7 @@
 3. Import the plugin's routing files in `config/routes.yaml`:
 
     ```yaml
-    threebrs_documentation_plugin_routing_file:
+    threebrs_sylius_documentation:
         resource: "@ThreeBRSSyliusDocumentationPlugin/config/routes.yaml"
         prefix: '%sylius_admin.path_name%'
     ```
@@ -64,7 +64,7 @@
 
     ```yaml
     parameters:
-        threebrs_sylius_documentation_plugin.docs_path: '%kernel.project_dir%/docs'
+        threebrs_sylius_documentation.docs_path: '%kernel.project_dir%/docs'
     ```
 ## Usage
 

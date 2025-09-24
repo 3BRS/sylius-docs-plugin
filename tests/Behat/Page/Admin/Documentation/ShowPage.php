@@ -11,7 +11,7 @@ class ShowPage extends SymfonyPage implements ShowPageInterface
 {
     public function getRouteName(): string
     {
-        return 'threebrs_admin_documentation_plugin_show';
+        return 'threebrs_sylius_documentation_admin_show';
     }
 
     public function hasContent(string $content): bool

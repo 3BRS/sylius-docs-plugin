@@ -32,10 +32,10 @@
 {# Block for stylesheets - delegates to hook #}
 {% block stylesheets %}
 	{{ parent() }}
-{% hook 'threebrs_sylius_documentation_plugin.base#stylesheets' %}
+{% hook 'threebrs_sylius_documentation.base#stylesheets' %}
 {% endblock %}
 
 {# Block for javascripts - delegates to hook #}
 {% block javascripts %}
 	{{ parent() }}
-{% hook 'threebrs_sylius_documentation_plugin.base#javascripts' %}{% endblock %}
+{% hook 'threebrs_sylius_documentation.base#javascripts' %}{% endblock %}
