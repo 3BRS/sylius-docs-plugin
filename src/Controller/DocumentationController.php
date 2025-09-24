@@ -163,10 +163,10 @@ readonly class DocumentationController
             $slug = pathinfo($matches[1], \PATHINFO_FILENAME);
 
             if ($slug === 'index') {
-                return sprintf('href="%s"', $this->router->generate('threebrs_admin_documentation_plugin_index'));
+                return sprintf('href="%s"', $this->router->generate('threebrs_sylius_documentation_admin_index'));
             }
 
-            return sprintf('href="%s"', $this->router->generate('threebrs_admin_documentation_plugin_show', ['slug' => $slug]));
+            return sprintf('href="%s"', $this->router->generate('threebrs_sylius_documentation_admin_show', ['slug' => $slug]));
         }, $html) ?? $html;
 
         $html = preg_replace_callback('/<img\s+[^>]*src="([^"\/]+)"[^>]*>/i', function (
@@ -184,7 +184,7 @@ readonly class DocumentationController
                 str_starts_with($imagePath, $basePath) &&
                 is_file($imagePath)
             ) {
-                $imageUrl = $this->router->generate('threebrs_admin_documentation_plugin_image', ['filename' => $filename]);
+                $imageUrl = $this->router->generate('threebrs_sylius_documentation_admin_image', ['filename' => $filename]);
 
                 return preg_replace('/src="[^"]+"/', 'src="' . $imageUrl . '"', $original) ?? $original;
             }

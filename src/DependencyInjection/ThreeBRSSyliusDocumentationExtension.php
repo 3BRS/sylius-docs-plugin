@@ -17,9 +17,9 @@ final class ThreeBRSSyliusDocumentationExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $docsPath = $config['docs_path'] ?? null;
-        $docsPath = assert(is_string($docsPath));
-        $container->setParameter('threebrs_sylius_documentation_plugin.docs_path', $docsPath);
+        assert(array_key_exists('docs_path', $config));
+        assert(is_string($config['docs_path']));
+        $container->setParameter($this->getAlias() . '.docs_path', $config['docs_path']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('services.yaml');

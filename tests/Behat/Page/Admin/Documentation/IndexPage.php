@@ -10,7 +10,7 @@ class IndexPage extends SymfonyPage implements IndexPageInterface
 {
     public function getRouteName(): string
     {
-        return 'threebrs_admin_documentation_plugin_index';
+        return 'threebrs_sylius_documentation_admin_index';
     }
 
     public function hasContent(string $content): bool

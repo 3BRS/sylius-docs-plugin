@@ -16,6 +16,6 @@ services:
         arguments:
             - '@twig'
             - '@League\CommonMark\CommonMarkConverter'
-            - '%threebrs_sylius_documentation_plugin.docs_path%'
+            - '%threebrs_sylius_documentation.docs_path%'
             - '%kernel.project_dir%'
             - '@router'

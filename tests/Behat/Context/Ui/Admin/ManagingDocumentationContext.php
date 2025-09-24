@@ -93,7 +93,7 @@ final readonly class ManagingDocumentationContext implements Context
         $this->dashboardPage->open();
         
         // Then generate the proper URL using the router and visit it
-        $url = $this->router->generate('threebrs_admin_documentation_plugin_image', ['filename' => $filename]);
+        $url = $this->router->generate('threebrs_sylius_documentation_admin_image', ['filename' => $filename]);
         $this->session->visit($url);
     }
 

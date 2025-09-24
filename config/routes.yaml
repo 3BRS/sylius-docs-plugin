@@ -1,16 +1,16 @@
-threebrs_admin_documentation_plugin_index:
+threebrs_sylius_documentation_admin_index:
     path: /documentation
     controller: ThreeBRS\SyliusDocumentationPlugin\Controller\DocumentationController::index
     methods: [ GET ]
 
-threebrs_admin_documentation_plugin_show:
+threebrs_sylius_documentation_admin_show:
     path: /documentation/{slug}
     controller: ThreeBRS\SyliusDocumentationPlugin\Controller\DocumentationController::show
     methods: [ GET ]
     requirements:
         slug: '[a-zA-Z0-9_\-]+'
 
-threebrs_admin_documentation_plugin_image:
+threebrs_sylius_documentation_admin_image:
     path: /documentation/document/{filename}
     controller: ThreeBRS\SyliusDocumentationPlugin\Controller\DocumentationController::image
     methods: [ GET ]
